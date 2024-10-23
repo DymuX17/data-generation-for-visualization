@@ -1,6 +1,6 @@
 # data-generation-for-visualization
 
-This project is a preliminary version of a project created to send process data from an automation system. The final version will download data using the OPC-UA standard from the TIA Portal environment. The data will be generated based on the actual automation system and plant for heat generation and distribution. The initial version allows you to generate a function (in this case, a sine function) and send it to the InfluxDB time database. It uses the `influxdb-client` library to write and query data from an InfluxDB bucket. Also it is able to visualise the results after uncomment "# data_get.get_values()" funcion (for preliminary purposes). There will be also project that retrives the data and visualises it.
+This project is a preliminary version of a project created to send process data from an automation system. The final version will download data using the OPC-UA standard from the TIA Portal environment. The data will be got from the real automation system that is plant for heat generation and distribution. The initial version allows you to generate a data from the function (in this case, a sine function) and send it to the InfluxDB time database. It uses the `influxdb-client` library to write and query data from an InfluxDB bucket. Also it is able to visualise the results after uncomment "# data_get.get_values()" funcion (for preliminary purposes). There will be also project that retrives the data and visualises it.
 
 ## Features
 
