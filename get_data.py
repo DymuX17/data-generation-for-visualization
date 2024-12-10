@@ -23,3 +23,16 @@ class GetData(InitDB):
             )
             self.write_api.write(bucket=self.bucket, org=self.org, record=point2)
             time.sleep(1)
+
+    def write_opcua_data(self):
+        while True:
+            self.node = self.client_opcua.get_node('ns=3;s="Dane"."y"')
+            value = self.node.get_value()
+            point3 = (
+                Point("opc_val1")
+                .tag("opcua", "plc")
+                .field("field3", value)
+                .time(datetime.datetime.now(datetime.timezone.utc), WritePrecision.US)
+            )
+            self.write_api.write(bucket=self.bucket, org=self.org, record=point3)
+            time.sleep(1)

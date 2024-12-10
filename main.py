@@ -18,6 +18,9 @@ if __name__ == '__main__':
     sin_thread = threading.Thread(target=data_get.write_sin_data)
     sin_thread.start()
 
+    opcua_thread = threading.Thread(target=data_get.write_opcua_data)
+    opcua_thread.start()
+
     for i in range(5):
         msg = {"id": i, "message": f"Hello Kafka! Message {i}"}
         print(f"sending message: {msg}")
@@ -30,4 +33,4 @@ if __name__ == '__main__':
     except KeyboardInterrupt:
         print("finishing...")
 
-    data_get.write_sin_data()
+    # data_get.write_sin_data()

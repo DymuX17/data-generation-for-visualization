@@ -25,18 +25,33 @@ class InitDB:
             self.query_api = None
             self.node = None
             self.url_opcua = "opc.tcp://192.168.1.100:4840"
-            self.Client = Client(self.url_opcua)
+            # self.url_opcua = "opc.tcp://192.168.1.100:4840"
+            self.client_opcua = Client(self.url_opcua)
 
             self.KAFKA_BROKER = '127.0.0.1:9092'
             self.TOPIC = 'test-topic'
 
             self.connect()
+            self.opcua_connect()
             InitDB._conn_init = True
 
     def connect(self):
         self.client = InfluxDBClient(url=self.url, token=self.token, org=self.org)
         self.write_api = self.client.write_api(write_options=SYNCHRONOUS)
         self.query_api = self.client.query_api()
+
+    def opcua_connect(self):
+        try:
+            self.client_opcua.connect()
+            print("Connected with OPC UA server")
+            # self.node = self.client_opcua.get_node("ns=3;s=a")
+            # value = self.node.get_value()
+            # print('value: ', value)
+        except Exception as e:
+            print('Error: ', e)
+        # finally:
+        #     self.client_opcua.disconnect()
+        #     print('Disconnected from OPC UA server...')
 
     def create_topic(self):
         try:
@@ -74,17 +89,3 @@ class InitDB:
 
 
 
-'''
-        try:
-            self.Client.connect()
-            print("Connected with OPC UA server")
-            self.node = Client.get_node("ns=3;s=a")
-            value = self.node.get_value()
-            print('value: ', value)
-        except Exception as e:
-            print('Error: ', e)
-        finally:
-            self.Client.disconnect()
-            print('Disconnected from OPC UA server...')
-
-'''
