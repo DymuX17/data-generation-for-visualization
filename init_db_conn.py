@@ -28,8 +28,8 @@ class InitDB:
             # self.url_opcua = "opc.tcp://192.168.1.100:4840"
             self.client_opcua = Client(self.url_opcua)
 
-            self.KAFKA_BROKER = '127.0.0.1:9092'
-            self.TOPIC = 'test-topic'
+            self.KAFKA_BROKER = "127.0.0.1:9092"
+            self.TOPIC = 'ttopic'
 
             self.connect()
             self.opcua_connect()
@@ -64,13 +64,22 @@ class InitDB:
     def create_producer(self):
         return KafkaProducer(
             bootstrap_servers=self.KAFKA_BROKER,
-            value_serializer=lambda v: json.dumps(v).encode('utf-8')
+            # Ensure self.KAFKA_BROKER is set correctly (e.g., '192.168.100.3:9092')
+            api_version=(3, 9, 0),  # Ensure this matches the broker's version
+            value_serializer=lambda v: json.dumps(v).encode('utf-8'),
+            metadata_max_age_ms=60000,  # Refresh metadata every 60 seconds
+            request_timeout_ms=30000,  # Timeout for producer requests
+            retries=5,  # Retry sending messages up to 5 times
+            max_in_flight_requests_per_connection=5,  # Limit in-flight requests
+            linger_ms=10,  # Add a small delay to batch messages
+            compression_type='gzip'  # Compress messages for efficiency
         )
 
     def create_consumer(self):
         return KafkaConsumer(
             self.TOPIC,
             bootstrap_servers=self.KAFKA_BROKER,
+            api_version=(3, 9, 0),
             group_id='test-group',
             auto_offset_reset='earliest',
             value_deserializer=lambda m: json.loads(m.decode('utf-8'))
@@ -84,8 +93,3 @@ class InitDB:
         print(f"Listening for messages on topic '{self.TOPIC}'...")
         for message in consumer:
             print(f"Received message: {message.value}")
-
-
-
-
-

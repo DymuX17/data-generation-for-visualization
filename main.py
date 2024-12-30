@@ -21,7 +21,7 @@ if __name__ == '__main__':
     opcua_thread = threading.Thread(target=data_get.write_opcua_data)
     opcua_thread.start()
 
-    for i in range(5):
+    for i in range(20):
         msg = {"id": i, "message": f"Hello Kafka! Message {i}"}
         print(f"sending message: {msg}")
         data_get.send_message(producer, msg)
